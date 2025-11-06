@@ -1,15 +1,16 @@
 package api.dto;
 
 import lombok.Data;
-import java.time.LocalDateTime;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Data
-public class UserResponse {
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class RegistrationResponse {
     private String id;
     private String email;
     private String fullName;
     private String[] roles;
     private Boolean verified;
-    private LocalDateTime createdAt;
+    private String createdAt;
     private Boolean banned;
 }
