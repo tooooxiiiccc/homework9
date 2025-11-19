@@ -13,4 +13,5 @@ public class MovieRequest {
     private String location;
     private Boolean published;
     private Integer genreId;
+    private Double rating;
 }
