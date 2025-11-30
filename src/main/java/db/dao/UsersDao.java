@@ -6,6 +6,12 @@ import org.jdbi.v3.sqlobject.statement.SqlQuery;
 import org.jdbi.v3.sqlobject.statement.SqlUpdate;
 import java.util.Optional;
 
+/**
+ * DAO интерфейс для работы с таблицей users.
+ * 
+ * Mapper для User регистрируется глобально в DbBaseSteps,
+ * поэтому здесь аннотации не нужны.
+ */
 public interface UsersDao {
     @SqlQuery("SELECT * FROM users WHERE id = :id")
     Optional<User> findById(@Bind("id") String id);

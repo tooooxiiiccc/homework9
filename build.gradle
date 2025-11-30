@@ -30,6 +30,8 @@ dependencies {
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.20.0'
     testImplementation 'io.qameta.allure:allure-junit5:2.30.0' // Allure
     testImplementation 'io.qameta.allure:allure-rest-assured:2.30.0' // Allure
+    implementation 'org.slf4j:slf4j-api:2.0.9'
+    runtimeOnly 'org.slf4j:slf4j-simple:2.0.9'
 }
 
 test {

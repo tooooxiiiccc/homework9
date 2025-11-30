@@ -1,9 +1,10 @@
 package api.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
-import java.time.LocalDateTime;
 
 @Data
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class MovieResponse {
     private Long id;
     private String name;
@@ -13,4 +14,5 @@ public class MovieResponse {
     private String location;
     private Boolean published;
     private Integer genreId;
+    private Double rating;
 }
