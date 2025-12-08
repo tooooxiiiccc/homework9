@@ -6,12 +6,6 @@ import org.jdbi.v3.sqlobject.statement.SqlQuery;
 import org.jdbi.v3.sqlobject.statement.SqlUpdate;
 import java.util.Optional;
 
-/**
- * DAO интерфейс для работы с таблицей movies.
- * 
- * Mapper для Movie регистрируется глобально в DbBaseSteps,
- * поэтому здесь аннотации не нужны.
- */
 public interface MoviesDao {
     @SqlQuery("SELECT * FROM movies WHERE id = :id")
     Optional<Movie> getMovieById(@Bind("id") Long id);

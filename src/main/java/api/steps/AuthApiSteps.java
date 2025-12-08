@@ -6,16 +6,23 @@ import util.AdminCredentials;
 import util.AdminCredentialsLoader;
 
 public class AuthApiSteps {
-    private AuthClient authClient = new AuthClient();
+    
+    private final AuthClient authClient;
+
+    public AuthApiSteps() {
+        this.authClient = new AuthClient();
+    }
+
     public String loginAsAdmin() {
         AdminCredentials adminCreds = AdminCredentialsLoader.getAdminCredentials();
-        AuthRequest authRequest = AuthRequest.builder()
-            .email(adminCreds.getEmail())
-            .password(adminCreds.getPassword())
+        AuthRequest authRequest = buildAuthRequest(adminCreds);
+        return authClient.getAuthToken(authRequest);
+    }
+
+    private AuthRequest buildAuthRequest(AdminCredentials credentials) {
+        return AuthRequest.builder()
+            .email(credentials.getEmail())
+            .password(credentials.getPassword())
             .build();
-        String token = authClient.getAuthToken(authRequest);
-        return token;
     }
 }
-
-

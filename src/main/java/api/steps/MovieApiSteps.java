@@ -1,64 +1,55 @@
 package api.steps;
 
 import api.client.MovieClient;
+import api.config.ApiConstants;
 import api.dto.MovieRequest;
 import api.dto.MovieResponse;
 import io.restassured.response.Response;
 import static org.hamcrest.Matchers.*;
 
 public class MovieApiSteps {
-    private MovieClient movieClient = new MovieClient();
+    private final MovieClient movieClient;
+
+    public MovieApiSteps() {
+        this.movieClient = new MovieClient();
+    }
 
     public MovieClient getMovieClient() {
         return movieClient;
     }
 
-    public MovieResponse createMovieSuccessfully(MovieRequest movieRequest, String token) {
-        Response response = movieClient.createMovie(movieRequest, token);
-
+    private MovieResponse extractMovieResponse(Response response, int expectedStatusCode) {
         return response.then()
-            .statusCode(201)
+            .statusCode(expectedStatusCode)
             .extract()
             .as(MovieResponse.class);
+    }
+
+    public MovieResponse createMovieSuccessfully(MovieRequest movieRequest, String token) {
+        Response response = movieClient.createMovie(movieRequest, token);
+        return extractMovieResponse(response, ApiConstants.HTTP_CREATED);
     }
 
     public MovieResponse getMovieSuccessfully(Long movieId, String token) {
         Response response = movieClient.getMovieById(movieId, token);
-
-        return response.then()
-            .statusCode(200)
-            .extract()
-            .as(MovieResponse.class);
+        return extractMovieResponse(response, ApiConstants.HTTP_OK);
     }
 
-    /**
-     * Обновляет фильм по ID и возвращает обновленный объект.
-     * 
-     * @param movieId ID фильма для обновления
-     * @param movieRequest объект с новыми данными фильма
-     * @param token токен авторизации
-     * @return обновленный объект MovieResponse
-     */
     public MovieResponse updateMovieSuccessfully(Long movieId, MovieRequest movieRequest, String token) {
         Response response = movieClient.updateMovie(movieId, movieRequest, token);
-
-        return response.then()
-            .statusCode(200)
-            .extract()
-            .as(MovieResponse.class);
+        if (response.getStatusCode() != ApiConstants.HTTP_OK) {
+            System.out.println("Ошибка обновления фильма. Статус: " + response.getStatusCode());
+            System.out.println("ID фильма: " + movieId);
+            System.out.println("URL: " + response.getHeader("Location"));
+            System.out.println("Тело ответа: " + response.getBody().asString());
+        }
+        
+        return extractMovieResponse(response, ApiConstants.HTTP_OK);
     }
 
-    /**
-     * Удаляет фильм по ID.
-     * Проверяет, что запрос вернул статус 204 (No Content) или 200 (OK).
-     * 
-     * @param movieId ID фильма для удаления
-     * @param token токен авторизации
-     */
     public void deleteMovieSuccessfully(Long movieId, String token) {
         Response response = movieClient.deleteMovieById(movieId, token);
-
         response.then()
-            .statusCode(anyOf(is(200), is(204)));
+            .statusCode(anyOf(is(ApiConstants.HTTP_OK), is(ApiConstants.HTTP_NO_CONTENT)));
     }
 }

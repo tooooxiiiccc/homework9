@@ -1,42 +1,42 @@
 package api.client;
 
+import api.config.ApiConstants;
 import api.dto.MovieRequest;
 import api.specs.CinescopeSpecs;
 import io.restassured.response.Response;
+import io.restassured.specification.RequestSpecification;
 import static io.restassured.RestAssured.given;
 
 public class MovieClient {
-   public Response createMovie(MovieRequest movieRequest, String token) {
-       return given()
-           .spec(CinescopeSpecs.getApiSpec())
-           .header("Authorization", "Bearer " + token)
-           .body(movieRequest)
-           .when()
-           .post("/movies");
+    private RequestSpecification createAuthenticatedRequest(String token) {
+        return given()
+            .spec(CinescopeSpecs.getApiSpec())
+            .header(ApiConstants.AUTHORIZATION_HEADER, ApiConstants.BEARER_PREFIX + token);
+    }
+
+    public Response createMovie(MovieRequest movieRequest, String token) {
+        return createAuthenticatedRequest(token)
+            .body(movieRequest)
+            .when()
+            .post(ApiConstants.MOVIES_ENDPOINT);
     }
 
     public Response getMovieById(Long movieId, String token) {
-       return given()
-           .spec(CinescopeSpecs.getApiSpec())
-           .header("Authorization", "Bearer " + token)
-           .when()
-           .get("/movies/" + movieId);
+        return createAuthenticatedRequest(token)
+            .when()
+            .get(ApiConstants.MOVIES_ENDPOINT + "/" + movieId);
     }
 
     public Response updateMovie(Long movieId, MovieRequest movieRequest, String token) {
-       return given()
-           .spec(CinescopeSpecs.getApiSpec())
-           .header("Authorization", "Bearer " + token)
-           .body(movieRequest)
-           .when()
-           .put("/movies/" + movieId);
+        return createAuthenticatedRequest(token)
+            .body(movieRequest)
+            .when()
+            .patch(ApiConstants.MOVIES_ENDPOINT + "/" + movieId);
     }
 
     public Response deleteMovieById(Long movieId, String token) {
-       return given()
-           .spec(CinescopeSpecs.getApiSpec())
-           .header("Authorization", "Bearer " + token)
-           .when()
-           .delete("/movies/" + movieId);
+        return createAuthenticatedRequest(token)
+            .when()
+            .delete(ApiConstants.MOVIES_ENDPOINT + "/" + movieId);
     }
 }
