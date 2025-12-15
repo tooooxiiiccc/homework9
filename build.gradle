@@ -1,9 +1,10 @@
 plugins {
-    id 'java'
+    id 'java-library'
     id 'io.qameta.allure' version '2.11.2'
+    id 'maven-publish'
 }
 
-group = 'org.example'
+group = 'com.github.danil-morozov'
 version = '1.0-SNAPSHOT'
 
 repositories {
@@ -11,29 +12,38 @@ repositories {
 }
 
 dependencies {
+    api 'io.rest-assured:rest-assured:5.3.0'
+    api 'io.rest-assured:json-schema-validator:5.3.0'
+    api 'com.fasterxml.jackson.core:jackson-databind:2.20.0'
+    api 'org.projectlombok:lombok:1.18.30'
     testImplementation platform('org.junit:junit-bom:5.10.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'
-    implementation 'io.rest-assured:rest-assured:5.3.0' // REST Assured
-    implementation 'io.rest-assured:json-schema-validator:5.3.0' // REST Assured
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.2' // JUnit 5
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.2' // JUnit 5
-    testImplementation 'org.assertj:assertj-core:3.24.2' // Assertions
-    testImplementation 'org.hamcrest:hamcrest:2.2' // Assertions
-    compileOnly 'org.projectlombok:lombok:1.18.30' // Lombok
-    annotationProcessor 'org.projectlombok:lombok:1.18.30' // Lombok
-    implementation platform('org.jdbi:jdbi3-bom:3.49.6') // JDBI для работы с БД
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.2'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.2'
+    testImplementation 'org.assertj:assertj-core:3.24.2'
+    testImplementation 'org.hamcrest:hamcrest:2.2'
+    testImplementation 'io.qameta.allure:allure-junit5:2.30.0'
+    testImplementation 'io.qameta.allure:allure-rest-assured:2.30.0'
+    annotationProcessor 'org.projectlombok:lombok:1.18.30'
+    implementation platform('org.jdbi:jdbi3-bom:3.49.6')
     implementation 'org.jdbi:jdbi3-core'
     implementation 'org.jdbi:jdbi3-sqlobject'
     implementation 'org.jdbi:jdbi3-jackson2'
     implementation 'org.jdbi:jdbi3-postgres'
     implementation 'org.postgresql:postgresql:42.7.8'
-    implementation 'com.fasterxml.jackson.core:jackson-databind:2.20.0'
-    testImplementation 'io.qameta.allure:allure-junit5:2.30.0' // Allure
-    testImplementation 'io.qameta.allure:allure-rest-assured:2.30.0' // Allure
     implementation 'org.slf4j:slf4j-api:2.0.9'
     runtimeOnly 'org.slf4j:slf4j-simple:2.0.9'
 }
 
 test {
     useJUnitPlatform()
+}
+
+// Настройка публикации для JitPack
+publishing {
+    publications {
+        maven(MavenPublication) {
+            from components.java
+        }
+    }
 }
