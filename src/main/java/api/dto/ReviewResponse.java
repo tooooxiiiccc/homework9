@@ -10,7 +10,7 @@ public class ReviewResponse {
     private String text;
     private Integer rating;
     private Long movieId;
-    private Long userId;
+    private String userId; // Изменено с Long на String, так как API возвращает UUID
 }
 
 
