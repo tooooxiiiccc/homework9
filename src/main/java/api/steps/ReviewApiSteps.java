@@ -40,8 +40,8 @@ public class ReviewApiSteps {
             .getList("", ReviewResponse.class);
     }
 
-    public void deleteReviewSuccessfully(Long reviewId, String token) {
-        Response response = reviewClient.deleteReviewById(reviewId, token);
+    public void deleteReviewSuccessfully(Long movieId, Long reviewId, String token) {
+        Response response = reviewClient.deleteReviewById(movieId, reviewId, token);
         response.then()
             .statusCode(anyOf(is(ApiConstants.HTTP_OK), is(ApiConstants.HTTP_NO_CONTENT)));
     }
@@ -57,7 +57,7 @@ public class ReviewApiSteps {
         List<ReviewResponse> reviews = getReviewsByMovieId(movieId, token);
         for (ReviewResponse review : reviews) {
             if (review.getText() != null && review.getText().contains(reviewText)) {
-                deleteReviewSuccessfully(review.getId(), token);
+                deleteReviewSuccessfully(movieId, review.getId(), token);
                 return true;
             }
         }

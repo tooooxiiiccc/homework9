@@ -27,10 +27,10 @@ public class ReviewClient {
             .get(ApiConstants.MOVIES_ENDPOINT + "/" + movieId + ApiConstants.REVIEWS_ENDPOINT);
     }
 
-    public Response deleteReviewById(Long reviewId, String token) {
+    public Response deleteReviewById(Long movieId, Long reviewId, String token) {
         return createAuthenticatedRequest(token)
             .when()
-            .delete(ApiConstants.REVIEW_BY_ID_ENDPOINT.replace("{id}", String.valueOf(reviewId)));
+            .delete(ApiConstants.MOVIES_ENDPOINT + "/" + movieId + ApiConstants.REVIEWS_ENDPOINT + "/" + reviewId);
     }
 }
 
