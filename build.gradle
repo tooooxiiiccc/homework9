@@ -7,6 +7,7 @@ plugins {
 group = 'com.github.danil-morozov'
 version = '1.0-SNAPSHOT'
 
+// Указываем минимальную версию Java для JitPack
 java {
     sourceCompatibility = JavaVersion.VERSION_11
     targetCompatibility = JavaVersion.VERSION_11
@@ -48,6 +49,13 @@ publishing {
     publications {
         maven(MavenPublication) {
             from components.java
+            groupId = project.group
+            artifactId = project.name
+            version = project.version
         }
     }
+}
+jar {
+    enabled = true
+    archiveClassifier = ''
 }
