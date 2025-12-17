@@ -1,0 +1,9 @@
+{
+  "db_movies": {
+    "host": "147.45.143.178",
+    "port": 32200,
+    "database": "db_movies",
+    "username": "test",
+    "password": "test"
+  }
+}
