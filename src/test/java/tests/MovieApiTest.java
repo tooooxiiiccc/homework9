@@ -10,6 +10,7 @@ import io.qameta.allure.*;
 import io.qameta.allure.Allure;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.Tag;
 
 import java.util.Optional;
 
@@ -27,17 +28,14 @@ public class MovieApiTest {
 
     @BeforeAll
     public static void setUp() {
-        // Инициализация шагов
         authApiSteps = new AuthApiSteps();
         movieApiSteps = new MovieApiSteps();
         moviesDbSteps = new MoviesDbSteps();
-
-        // Получаем токен авторизации один раз для всех тестов
-        // Это эффективнее, чем логиниться в каждом тесте
         authToken = authApiSteps.loginAsAdmin();
     }
 
     @Test
+    @Tag("smoke")
     @DisplayName("Позитивный тест: создание фильма через API и проверка в БД")
     @Description("Тест проверяет, что фильм успешно создается через API и сохраняется в базе данных")
     @Severity(SeverityLevel.CRITICAL)
@@ -102,6 +100,7 @@ public class MovieApiTest {
     }
 
     @Test
+    @Tag("regress")
     @DisplayName("Негативный тест: создание фильма без обязательных полей")
     @Description("Тест проверяет, что API возвращает ошибку при попытке создать фильм без обязательных полей")
     @Severity(SeverityLevel.NORMAL)
@@ -124,6 +123,7 @@ public class MovieApiTest {
      * Позитивный тест: получаем фильм по ID и проверяем данные в БД
      */
     @Test
+    @Tag("smoke")
     @DisplayName("Позитивный тест: получение фильма по ID и проверка в БД")
     @Description("Тест проверяет, что фильм успешно получается через API и данные совпадают с БД")
     @Severity(SeverityLevel.CRITICAL)
@@ -162,6 +162,7 @@ public class MovieApiTest {
     }
 
     @Test
+    @Tag("regress")
     @DisplayName("Негативный тест: получение несуществующего фильма")
     @Description("Тест проверяет, что API возвращает ошибку при попытке получить несуществующий фильм")
     @Severity(SeverityLevel.NORMAL)
@@ -178,6 +179,7 @@ public class MovieApiTest {
     }
 
     @Test
+    @Tag("smoke")
     @DisplayName("Позитивный тест: обновление фильма и проверка изменений в БД")
     @Description("Тест проверяет, что фильм успешно обновляется через API и изменения сохраняются в БД")
     @Severity(SeverityLevel.CRITICAL)
@@ -260,6 +262,7 @@ public class MovieApiTest {
     }
 
     @Test
+    @Tag("regress")
     @DisplayName("Негативный тест: обновление несуществующего фильма")
     @Description("Тест проверяет, что API возвращает ошибку при попытке обновить несуществующий фильм")
     @Severity(SeverityLevel.NORMAL)
@@ -278,6 +281,7 @@ public class MovieApiTest {
     }
 
     @Test
+    @Tag("smoke")
     @DisplayName("Позитивный тест: удаление фильма и проверка удаления в БД")
     @Description("Тест проверяет, что фильм успешно удаляется через API и удаляется из БД")
     @Severity(SeverityLevel.CRITICAL)
@@ -308,6 +312,7 @@ public class MovieApiTest {
     }
 
     @Test
+    @Tag("regress")
     @DisplayName("Негативный тест: удаление несуществующего фильма")
     @Description("Тест проверяет, что API возвращает ошибку при попытке удалить несуществующий фильм")
     @Severity(SeverityLevel.NORMAL)

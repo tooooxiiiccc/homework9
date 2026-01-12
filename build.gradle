@@ -36,4 +36,32 @@ dependencies {
 
 test {
     useJUnitPlatform()
+    testLogging {
+        events "passed", "skipped", "failed"
+        exceptionFormat "full"
+    }
+
+    systemProperties += [
+            'junit.jupiter.execution.parallel.enabled'                 : true,
+            'junit.jupiter.execution.parallel.mode.default'            : 'concurrent',
+            'junit.jupiter.execution.parallel.mode.classes.default'    : 'concurrent',
+            'junit.jupiter.execution.parallel.config.strategy'         : 'fixed',
+            'junit.jupiter.execution.parallel.config.fixed.parallelism': System.getProperty('parallel.threads', '4')
+    ]
+    
+    if (project.hasProperty('tag')) {
+        useJUnitPlatform {
+            includeTags project.property('tag')
+        }
+    }
+}
+
+allure {
+    version = "2.30.0"
+    report {
+        reportDir = file("build/reports/allure-report")
+    }
+    results {
+        resultsDir = file("build/allure-results")
+    }
 }
