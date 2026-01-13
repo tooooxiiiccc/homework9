@@ -1,6 +1,6 @@
 plugins {
     id 'java'
-    id 'io.qameta.allure' version '2.11.2'
+    id 'io.qameta.allure' version '2.12.0'
 }
 
 group = 'org.example'
@@ -35,7 +35,12 @@ dependencies {
 }
 
 test {
-    useJUnitPlatform()
+    useJUnitPlatform {
+        if (project.hasProperty('tag')) {
+            includeTags project.property('tag')
+        }
+    }
+    
     testLogging {
         events "passed", "skipped", "failed"
         exceptionFormat "full"
@@ -48,20 +53,11 @@ test {
             'junit.jupiter.execution.parallel.config.strategy'         : 'fixed',
             'junit.jupiter.execution.parallel.config.fixed.parallelism': System.getProperty('parallel.threads', '4')
     ]
-    
-    if (project.hasProperty('tag')) {
-        useJUnitPlatform {
-            includeTags project.property('tag')
-        }
-    }
 }
 
 allure {
     version = "2.30.0"
     report {
         reportDir = file("build/reports/allure-report")
-    }
-    results {
-        resultsDir = file("build/allure-results")
     }
 }
